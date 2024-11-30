@@ -15,18 +15,15 @@ public:
 
 private slots:
     void onPacketCaptured(const PacketInfo &packet);
-    void startCapture();
-    void stopCapture();
-    void pauseCapture();
+    void toggleCapture();
     void filterProtocol(int index);
 
 private:
     PacketCapture *packetCapture;
     QTableWidget *packetTable;
     QComboBox *interfaceSelector;
-    QComboBox *protocolFilter;
+    QComboBox *protocolFilter;  
     QPushButton *captureButton;
-    QPushButton *pauseButton;
 
     void setupUI();
     void setupNetworkInterfaces();

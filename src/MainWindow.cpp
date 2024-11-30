@@ -41,16 +41,13 @@ void MainWindow::setupUI() {
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     captureButton = new QPushButton("Start Capture");
-    pauseButton = new QPushButton("Pause");
     
     buttonLayout->addWidget(captureButton);
-    buttonLayout->addWidget(pauseButton);
     
     mainLayout->addLayout(buttonLayout);
 
     // Connections
-    connect(captureButton, &QPushButton::clicked, this, &MainWindow::startCapture);
-    connect(pauseButton, &QPushButton::clicked, this, &MainWindow::pauseCapture);
+    connect(captureButton, &QPushButton::clicked, this, &MainWindow::toggleCapture);
 
     setCentralWidget(centralWidget);
     setWindowTitle("NetHawk - Network Monitor");
@@ -97,28 +94,16 @@ void MainWindow::onPacketCaptured(const PacketInfo &packet) {
     packetTable->scrollToBottom();
 }
 
-void MainWindow::startCapture() {
-    QString interface = interfaceSelector->currentText();
-    packetCapture->startCapture(interface);
-    captureButton->setText("Capturing...");
-    captureButton->setEnabled(false);
-    pauseButton->setEnabled(true);
-}
-
-void MainWindow::stopCapture() {
-    packetCapture->stopCapture();
-    captureButton->setText("Start Capture");
-    captureButton->setEnabled(true);
-    pauseButton->setEnabled(false);
-}
-
-void MainWindow::pauseCapture() {
-    if (pauseButton->text() == "Pause") {
-        packetCapture->pauseCapture();
-        pauseButton->setText("Resume");
+void MainWindow::toggleCapture() {
+    if (captureButton->text() == "Start Capture") {
+        // Start capture
+        QString interface = interfaceSelector->currentText();
+        packetCapture->startCapture(interface);
+        captureButton->setText("Stop Capture");
     } else {
-        packetCapture->resumeCapture();
-        pauseButton->setText("Pause");
+        // Stop capture
+        packetCapture->stopCapture();
+        captureButton->setText("Start Capture");
     }
 }
 
