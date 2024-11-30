@@ -2,6 +2,7 @@
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <thread>
 #include <arpa/inet.h>
 
 PacketCapture::PacketCapture(QObject *parent) : QObject(parent), handle(nullptr), isPaused(false) {}
